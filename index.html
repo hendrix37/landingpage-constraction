@@ -1,748 +1,1097 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dealin Architect - Bangun Rumah Tanpa Cemas</title>
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-
-    <!-- Tailwind Config -->
+<html class="scroll-smooth" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Dealin Architect - Red Theme Refined</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+      rel="stylesheet"
+    />
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Playfair Display', 'serif'],
-                    },
-                    colors: {
-                        amber: {
-                            50: '#fffbeb',
-                            100: '#fef3c7',
-                            400: '#fbbf24',
-                            500: '#f59e0b',
-                            600: '#d97706',
-                            700: '#b45309',
-                        }
-                    }
-                }
-            }
-        }
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              primary: "#D32F2F", // Vibrant Architectural Red (kept bold)
+              "primary-hover": "#B71C1C", // Darker shade for interaction
+              secondary: "#FFD54F", // Softer Gold accent
+              "background-light": "#FFFFFF",
+              "background-dark": "#0F0505", // Very deep, warm dark (neutral/red mix)
+              "dark-red-bg": "#2A0A0A", // Refined dark red: Deeper, richer, less saturated for less eye fatigue
+              "rich-red": "#8B0000", // For accent backgrounds
+              "soft-red-bg": "#FEF2F2", // Very subtle red tint for light sections
+              "card-dark": "#1C1111", // Warm dark card background
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              display: ["Playfair Display", "serif"],
+            },
+            borderRadius: {
+              DEFAULT: "0.5rem",
+              xl: "0.75rem",
+              "2xl": "1rem",
+              "3xl": "1.5rem",
+            },
+            boxShadow: {
+              soft: "0 4px 20px -2px rgba(0, 0, 0, 0.05)",
+              glow: "0 0 20px rgba(211, 47, 47, 0.35)",
+              "card-hover": "0 10px 40px -10px rgba(211, 47, 47, 0.15)",
+            },
+          },
+        },
+      };
     </script>
-
-    <!-- Custom Styles for Animations -->
     <style>
-        /* Smooth Reveal Animation Classes */
-        .reveal-element {
-            opacity: 0;
-            transform: translateY(3rem);
-            transition: all 1s ease-out;
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: #cbd5e1;
+        border-radius: 20px;
+      }
+      .dark ::-webkit-scrollbar-thumb {
+        background-color: #4b5563;
+      }
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+      }
+      .dark .glass-panel {
+        background: rgba(30, 10, 10, 0.7);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      @keyframes gradient-xy {
+        0% {
+          background-position: 0% 50%;
         }
-        .reveal-element.active {
-            opacity: 1;
-            transform: translateY(0);
+        50% {
+          background-position: 100% 50%;
         }
-
-        /* Hero Text Animation */
-        .hero-text {
-            transition: all 0.7s ease-in-out;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
+        100% {
+          background-position: 0% 50%;
         }
-        
-        /* SVG Animations */
-        @keyframes float-slow {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        @keyframes draw {
-            to { stroke-dashoffset: 0; }
-        }
-        @keyframes pulse-slow {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .7; }
-        }
-        @keyframes scale-in {
-            0% { opacity: 0; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        .animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
-        .animate-draw { stroke-dasharray: 1000; stroke-dashoffset: 1000; animation: draw 4s linear forwards; }
-        .animate-pulse-slow { animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
-        .animate-scale-in { animation: scale-in 0.3s ease-out forwards; }
-        
-        /* Utility */
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      }
     </style>
-</head>
-<body class="font-sans text-slate-800 bg-white antialiased overflow-x-hidden selection:bg-amber-100 selection:text-amber-900">
-
-    <!-- 1. NAVBAR -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-6 bg-transparent">
-        <div class="container mx-auto px-6 flex justify-between items-center">
-            <div class="flex items-center gap-2">
-                <div class="w-8 h-8 bg-slate-900 rounded-sm flex items-center justify-center text-white font-bold font-serif text-xl">D</div>
-                <span class="text-xl font-bold tracking-tight text-slate-900">
-                    DEALIN <span class="font-light">ARCHITECT</span>
-                </span>
+  </head>
+  <body
+    class="bg-background-light dark:bg-background-dark text-gray-800 dark:text-gray-200 transition-colors duration-300"
+  >
+    <nav
+      class="sticky top-0 z-50 w-full bg-background-light/95 dark:bg-[#0F0505]/95 backdrop-blur-md border-b border-red-50 dark:border-red-900/30"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center h-20">
+          <div
+            class="flex-shrink-0 flex items-center gap-2 cursor-pointer group"
+          >
+            <div
+              class="w-9 h-9 bg-primary text-white flex items-center justify-center font-bold font-display rounded-lg shadow-glow transition-transform group-hover:scale-105"
+            >
+              D
             </div>
-
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#cerita" class="text-sm font-medium hover:text-amber-600 transition-colors">Cerita</a>
-                <a href="#solusi" class="text-sm font-medium hover:text-amber-600 transition-colors">Solusi</a>
-                <a href="#portfolio" class="text-sm font-medium hover:text-amber-600 transition-colors">Karya</a>
-                <a href="#edukasi" class="text-sm font-medium hover:text-amber-600 transition-colors">Edukasi</a>
-                <button onclick="openWhatsApp()" class="bg-slate-900 text-white px-5 py-2.5 rounded-full text-sm font-medium hover:bg-slate-800 transition-all hover:shadow-lg flex items-center gap-2">
-                    Konsultasi Gratis <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </button>
-            </div>
-
-            <!-- Mobile Toggle -->
-            <button class="md:hidden" onclick="toggleMobileMenu()">
-                <i data-lucide="menu" id="menu-icon"></i>
+            <span
+              class="font-bold text-xl tracking-tight uppercase font-display dark:text-white"
+              >Dealin
+              <span class="text-primary font-normal">Architect</span></span
+            >
+          </div>
+          <div class="hidden md:flex space-x-8 items-center">
+            <a
+              class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium text-sm transition"
+              href="#"
+              >Story</a
+            >
+            <a
+              class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium text-sm transition"
+              href="#"
+              >Solution</a
+            >
+            <a
+              class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium text-sm transition"
+              href="#"
+              >Work</a
+            >
+            <a
+              class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary font-medium text-sm transition"
+              href="#"
+              >Education</a
+            >
+            <a
+              class="bg-primary hover:bg-primary-hover text-white px-6 py-2.5 rounded-full text-sm font-medium transition-all shadow-glow hover:shadow-lg flex items-center gap-2"
+              href="#"
+            >
+              Free Consultation
+              <span class="material-icons-outlined text-sm">arrow_forward</span>
+            </a>
+          </div>
+          <div class="md:hidden flex items-center">
+            <button class="text-gray-600 dark:text-gray-300 hover:text-primary">
+              <span class="material-icons-outlined">menu</span>
             </button>
+          </div>
         </div>
-
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full bg-white border-b border-slate-100 p-6 flex-col gap-4 shadow-xl md:hidden">
-            <a href="#cerita" class="text-lg font-medium" onclick="toggleMobileMenu()">Cerita</a>
-            <a href="#solusi" class="text-lg font-medium" onclick="toggleMobileMenu()">Solusi</a>
-            <a href="#portfolio" class="text-lg font-medium" onclick="toggleMobileMenu()">Karya</a>
-            <button onclick="openWhatsApp()" class="bg-amber-500 text-white w-full py-3 rounded-lg font-bold mt-2">
-                Chat WhatsApp
-            </button>
-        </div>
+      </div>
     </nav>
-
-    <!-- 2. HERO SECTION -->
-    <header class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-        <div class="container mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
-            
-            <!-- Left: Dynamic Story Text -->
-            <div class="z-10 relative">
-                <div class="inline-block px-3 py-1 bg-amber-50 text-amber-700 text-xs font-bold tracking-widest uppercase rounded-full mb-6 border border-amber-100">
-                    Architect as Storyteller
-                </div>
-                
-                <div class="h-32 md:h-40 mb-4 relative" id="hero-text-container">
-                    <!-- Texts injected via JS -->
-                    <h1 class="hero-text text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight opacity-100 translate-y-0">Bangun Rumah Tanpa Cemas.</h1>
-                    <h1 class="hero-text text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight opacity-0 translate-y-8">Desain Jujur, Hasil Nyata.</h1>
-                    <h1 class="hero-text text-4xl md:text-5xl lg:text-6xl font-serif font-bold leading-tight opacity-0 translate-y-8">Wujudkan Mimpi Tanpa Drama.</h1>
-                </div>
-
-                <p class="text-slate-500 text-lg md:text-xl leading-relaxed max-w-lg mb-8 mt-4">
-                    Arsitek & Kontraktor Rumah Tinggal yang mengutamakan <span class="text-slate-900 font-semibold underline decoration-amber-400 decoration-2 underline-offset-4">transparansi</span>, amanah, dan kualitas bangunan jangka panjang.
-                </p>
-
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <button onclick="openWhatsApp()" class="px-8 py-4 bg-slate-900 text-white rounded-full font-bold hover:bg-slate-800 transition-all hover:scale-105 shadow-xl shadow-slate-200 flex items-center justify-center gap-2">
-                        Konsultasi via WhatsApp
-                    </button>
-                    <a href="#portfolio" class="px-8 py-4 bg-white text-slate-900 border border-slate-200 rounded-full font-bold hover:bg-slate-50 transition-all flex items-center justify-center gap-2 group">
-                        Lihat Cerita Proyek
-                        <i data-lucide="chevron-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
-                    </a>
-                </div>
+    <section class="relative pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden">
+      <div
+        class="absolute top-0 right-0 -z-10 w-1/2 h-full bg-gradient-to-l from-red-50/50 to-transparent dark:from-red-900/10 dark:to-transparent pointer-events-none"
+      ></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid lg:grid-cols-2 gap-16 items-center">
+          <div class="space-y-8">
+            <div
+              class="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-red-50 dark:bg-red-900/20 border border-red-100 dark:border-red-900/30"
+            >
+              <span
+                class="w-2 h-2 rounded-full bg-primary animate-pulse"
+              ></span>
+              <span
+                class="text-primary text-xs font-bold tracking-widest uppercase"
+                >Architect as Storyteller</span
+              >
             </div>
-
-            <!-- Right: SVG Animated Visual -->
-            <div class="relative h-[400px] w-full items-center justify-center hidden lg:flex">
-                <svg viewBox="0 0 400 400" class="w-full h-full max-w-lg drop-shadow-2xl">
-                    <defs>
-                        <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                            <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#f1f5f9" strokeWidth="1"/>
-                        </pattern>
-                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#f59e0b; stop-opacity:0.2" />
-                            <stop offset="100%" style="stop-color:#f59e0b; stop-opacity:0" />
-                        </linearGradient>
-                    </defs>
-                    <rect width="100%" height="100%" fill="url(#grid)" />
-                    <g class="animate-float-slow">
-                        <path d="M50 300 L200 350 L350 300 L200 250 Z" fill="#e2e8f0" stroke="#94a3b8" strokeWidth="2" />
-                        <path d="M50 300 L50 150 L200 200 L200 350" fill="none" stroke="#334155" strokeWidth="2" stroke-dasharray="10 5" class="animate-draw" />
-                        <path d="M350 300 L350 150 L200 200" fill="none" stroke="#334155" strokeWidth="2" stroke-dasharray="10 5" class="animate-draw" style="animation-delay: 75ms;" />
-                        <path d="M50 150 L200 50 L350 150 L200 200 Z" fill="url(#grad1)" stroke="#d97706" strokeWidth="3" class="animate-pulse-slow" />
-                        <circle cx="200" cy="50" r="5" fill="#d97706" class="animate-ping" />
-                        <rect x="220" y="80" width="60" height="40" rx="4" fill="white" stroke="#cbd5e1" strokeWidth="1" class="opacity-80" />
-                        <text x="230" y="105" font-family="sans-serif" font-size="10" fill="#64748b">RAB: OK</text>
-                        <rect x="80" y="280" width="50" height="60" fill="#cbd5e1" class="opacity-50 animate-pulse" />
-                    </g>
-                </svg>
-                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-100/30 rounded-full blur-3xl -z-10"></div>
+            <h1
+              class="text-5xl lg:text-7xl font-display font-bold text-gray-900 dark:text-white leading-[1.1]"
+            >
+              Bangun Rumah <br />
+              <span
+                class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-red-500"
+                >Tanpa Cemas.</span
+              >
+            </h1>
+            <p
+              class="text-lg text-gray-600 dark:text-gray-400 max-w-lg leading-relaxed"
+            >
+              Arsitek &amp; Kontraktor Rumah Tinggal yang mengutamakan
+              <strong
+                class="text-primary font-semibold underline decoration-primary/30 underline-offset-4"
+                >transparansi</strong
+              >, amanah, dan kualitas bangunan jangka panjang.
+            </p>
+            <div class="flex flex-wrap gap-4 pt-2">
+              <button
+                class="bg-gray-900 dark:bg-white text-white dark:text-gray-900 px-8 py-4 rounded-full font-medium hover:bg-primary dark:hover:bg-gray-200 transition duration-300 flex items-center gap-2 shadow-lg shadow-gray-900/20 dark:shadow-none"
+              >
+                Consult via WhatsApp
+              </button>
+              <button
+                class="border border-gray-200 dark:border-gray-700 bg-white dark:bg-transparent text-gray-700 dark:text-gray-300 px-8 py-4 rounded-full font-medium hover:border-primary hover:text-primary dark:hover:border-primary dark:hover:text-primary transition duration-300 flex items-center gap-2"
+              >
+                View Projects
+                <span class="material-icons-outlined text-sm"
+                  >arrow_outward</span
+                >
+              </button>
             </div>
-        </div>
-    </header>
-
-    <!-- 3. PROBLEM SECTION -->
-    <section id="cerita" class="py-24 bg-slate-900 text-white relative overflow-hidden">
-        <div class="container mx-auto px-6 relative z-10">
-            <div class="reveal-element text-center mb-16">
-                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-4">Kenapa Banyak Orang <span class="text-amber-500 italic">Takut</span> Bangun Rumah?</h2>
-                <p class="text-slate-400 max-w-2xl mx-auto">Membangun rumah seharusnya menjadi mimpi indah, bukan sumber stress berkepanjangan.</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Card 1 -->
-                <div class="reveal-element bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-amber-500/50 transition-all group h-full" style="transition-delay: 0ms;">
-                    <div class="mb-6 bg-slate-900 w-16 h-16 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <i data-lucide="pen-tool" class="text-red-400 w-10 h-10"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Budget Membengkak</h3>
-                    <p class="text-slate-400 leading-relaxed">RAB awal murah, tapi di tengah jalan banyak biaya tambahan tak terduga yang 'memaksa'.</p>
-                </div>
-                <!-- Card 2 -->
-                <div class="reveal-element bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-amber-500/50 transition-all group h-full" style="transition-delay: 200ms;">
-                    <div class="mb-6 bg-slate-900 w-16 h-16 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <i data-lucide="layout-template" class="text-red-400 w-10 h-10"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Spesifikasi Diturunkan</h3>
-                    <p class="text-slate-400 leading-relaxed">Janji pakai material Grade A, realita di lapangan diganti Grade B tanpa sepengetahuan Anda.</p>
-                </div>
-                <!-- Card 3 -->
-                <div class="reveal-element bg-slate-800 p-8 rounded-2xl border border-slate-700 hover:border-amber-500/50 transition-all group h-full" style="transition-delay: 400ms;">
-                    <div class="mb-6 bg-slate-900 w-16 h-16 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                        <i data-lucide="message-circle" class="text-red-400 w-10 h-10"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3">Susah Komunikasi</h3>
-                    <p class="text-slate-400 leading-relaxed">Kontraktor susah dihubungi saat ada masalah, progress lambat, dan tidak transparan.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. SOLUTION SECTION -->
-    <section id="solusi" class="py-24 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="reveal-element text-center max-w-3xl mx-auto mb-20">
-                <h2 class="text-3xl md:text-4xl font-serif font-bold mb-6 text-slate-900">
-                    Dealin Architect Mengubah Cara Orang <br/>Membangun Rumah.
-                </h2>
-                <p class="text-lg text-slate-600">
-                    Kami bukan sekadar membangun tembok, kami menjaga kepercayaan Anda. Apa yang tertulis di kontrak, itulah yang kami bangun.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-12">
-                <!-- Feature 1 -->
-                <div class="reveal-element text-center" style="transition-delay: 0ms;">
-                    <div class="w-20 h-20 mx-auto bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-                        <i data-lucide="file-text" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-slate-900">Transparansi Total</h3>
-                    <p class="text-slate-600">RAB detail hingga satuan baut. Anda berhak tahu kemana setiap Rupiah dialokasikan.</p>
-                </div>
-                <!-- Feature 2 -->
-                <div class="reveal-element text-center" style="transition-delay: 150ms;">
-                    <div class="w-20 h-20 mx-auto bg-green-50 text-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-                        <i data-lucide="shield-check" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-slate-900">Amanah & Legal</h3>
-                    <p class="text-slate-600">Kontrak kerja jelas berpayung hukum. Garansi pemeliharaan dan struktur terjamin.</p>
-                </div>
-                <!-- Feature 3 -->
-                <div class="reveal-element text-center" style="transition-delay: 300ms;">
-                    <div class="w-20 h-20 mx-auto bg-amber-50 text-amber-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm">
-                        <i data-lucide="clock" class="w-8 h-8"></i>
-                    </div>
-                    <h3 class="text-xl font-bold mb-3 text-slate-900">Timeline Terukur</h3>
-                    <p class="text-slate-600">Jadwal kerja (Kurva S) yang realistis dan update progress mingguan via digital report.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 5. PORTFOLIO SECTION -->
-    <section id="portfolio" class="py-24 bg-slate-50">
-        <div class="container mx-auto px-6">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12">
-                <div>
-                    <span class="text-amber-600 font-bold tracking-wider text-sm uppercase">Portfolio</span>
-                    <h2 class="text-3xl md:text-4xl font-serif font-bold mt-2 text-slate-900">Bukan Sekadar Proyek,<br/>Ini Cerita Klien Kami</h2>
-                </div>
-                <div class="hidden md:block">
-                    <p class="text-slate-500 mb-2 text-right">Geser untuk melihat cerita lainnya</p>
-                    <div class="flex gap-2 justify-end">
-                        <i data-lucide="arrow-right" class="text-slate-400"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Project Container -->
-            <div id="project-list" class="flex overflow-x-auto pb-8 gap-6 snap-x snap-mandatory hide-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
-                <!-- Projects will be rendered by JS here -->
-            </div>
-        </div>
-    </section>
-
-    <!-- 6. TRUST & PROOF -->
-    <section class="py-20 border-b border-slate-100">
-        <div class="container mx-auto px-6">
-            <div class="text-center mb-12">
-                <h2 class="text-2xl font-bold text-slate-900">Dipercaya oleh Partner & Institusi</h2>
-            </div>
-            <div class="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-                <div class="text-xl font-black text-slate-400 flex items-center gap-2"><div class="w-8 h-8 bg-slate-300 rounded-full"></div>Semen Gresik</div>
-                <div class="text-xl font-black text-slate-400 flex items-center gap-2"><div class="w-8 h-8 bg-slate-300 rounded-full"></div>Mowilex</div>
-                <div class="text-xl font-black text-slate-400 flex items-center gap-2"><div class="w-8 h-8 bg-slate-300 rounded-full"></div>Toto</div>
-                <div class="text-xl font-black text-slate-400 flex items-center gap-2"><div class="w-8 h-8 bg-slate-300 rounded-full"></div>Propan</div>
-            </div>
-
-            <div class="mt-20 grid md:grid-cols-2 gap-8">
-                <div class="reveal-element bg-slate-900 text-white p-8 rounded-2xl relative overflow-hidden">
-                    <div class="absolute top-0 right-0 p-8 opacity-10">
-                        <i data-lucide="star" class="w-32 h-32"></i>
-                    </div>
-                    <div class="relative z-10">
-                        <div class="flex gap-1 text-amber-400 mb-4">
-                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
-                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
-                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
-                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
-                            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
-                        </div>
-                        <p class="text-xl font-serif italic mb-6">"Saya sempat skeptis karena trauma dengan kontraktor sebelumnya. Tapi Dealin beda. Laporan mingguan mereka sangat detail, bahkan saya bisa cek bon material. Rumah jadi tepat waktu."</p>
-                        <div>
-                            <p class="font-bold">Bapak Heru & Ibu Susi</p>
-                            <p class="text-sm text-slate-400">Owner Rumah Tumbuh Sleman</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-amber-50 p-6 rounded-2xl flex flex-col justify-center items-center text-center">
-                        <h3 class="text-4xl font-black text-amber-600 mb-2">0</h3>
-                        <p class="text-slate-600 text-sm font-medium">Sengketa Proyek</p>
-                    </div>
-                    <div class="bg-blue-50 p-6 rounded-2xl flex flex-col justify-center items-center text-center">
-                        <h3 class="text-4xl font-black text-blue-600 mb-2">100%</h3>
-                        <p class="text-slate-600 text-sm font-medium">Sesuai RAB</p>
-                    </div>
-                    <div class="col-span-2 bg-slate-50 p-6 rounded-2xl flex items-center justify-between px-8">
-                        <div>
-                            <h3 class="text-3xl font-black text-slate-900 mb-1">90%</h3>
-                            <p class="text-slate-600 text-sm">Klien dari Referral</p>
-                        </div>
-                        <i data-lucide="user" class="w-12 h-12 text-slate-200"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 7. TEAM SECTION -->
-    <section class="py-24 bg-white">
-        <div class="container mx-auto px-6">
-            <div class="reveal-element text-center mb-16">
-                <h2 class="text-3xl font-serif font-bold mb-4">Orang-Orang di Balik Rumah Anda</h2>
-                <p class="text-slate-500">Kami bekerja dengan hati untuk memastikan tempat tinggal Anda aman.</p>
-            </div>
-            
-            <div class="grid md:grid-cols-4 gap-6">
-                <!-- Team Member 1 -->
-                <div class="reveal-element group relative overflow-hidden rounded-xl cursor-pointer" style="transition-delay: 0ms;">
-                    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=400" alt="Team" class="w-full h-80 object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105">
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-6 pt-20 translate-y-4 group-hover:translate-y-0 transition-transform">
-                        <p class="text-white font-bold text-lg">Ir. Ahmad Fauzi</p>
-                        <p class="text-amber-400 text-sm">Principal Architect</p>
-                    </div>
-                </div>
-                <!-- Team Member 2 -->
-                <div class="reveal-element group relative overflow-hidden rounded-xl cursor-pointer" style="transition-delay: 100ms;">
-                    <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=400" alt="Team" class="w-full h-80 object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105">
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-6 pt-20 translate-y-4 group-hover:translate-y-0 transition-transform">
-                        <p class="text-white font-bold text-lg">Sarah Wijaya, S.T.</p>
-                        <p class="text-amber-400 text-sm">Lead Interior</p>
-                    </div>
-                </div>
-                 <!-- Team Member 3 -->
-                 <div class="reveal-element group relative overflow-hidden rounded-xl cursor-pointer" style="transition-delay: 200ms;">
-                    <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=400" alt="Team" class="w-full h-80 object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105">
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-6 pt-20 translate-y-4 group-hover:translate-y-0 transition-transform">
-                        <p class="text-white font-bold text-lg">Budi Santoso</p>
-                        <p class="text-amber-400 text-sm">Head of Construction</p>
-                    </div>
-                </div>
-                 <!-- Team Member 4 -->
-                 <div class="reveal-element group relative overflow-hidden rounded-xl cursor-pointer" style="transition-delay: 300ms;">
-                    <img src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&q=80&w=400" alt="Team" class="w-full h-80 object-cover grayscale group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105">
-                    <div class="absolute bottom-0 left-0 w-full bg-gradient-to-t from-black/80 to-transparent p-6 pt-20 translate-y-4 group-hover:translate-y-0 transition-transform">
-                        <p class="text-white font-bold text-lg">Tim Lapangan</p>
-                        <p class="text-amber-400 text-sm">Dedikasi Tinggi</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 8. BLOG / EDUKASI -->
-    <section id="edukasi" class="py-24 bg-slate-50">
-        <div class="container mx-auto px-6">
-            <div class="flex justify-between items-center mb-10">
-                <h2 class="text-2xl font-bold font-serif">Wawasan Membangun</h2>
-                <a href="#" class="text-amber-600 font-bold text-sm hover:underline">Lihat Semua Artikel</a>
-            </div>
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Article 1 -->
-                <div class="reveal-element bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-slate-100">
-                    <p class="text-xs text-slate-400 mb-3">12 Okt 2024</p>
-                    <h3 class="font-bold text-lg mb-3 hover:text-amber-600 cursor-pointer transition-colors">Biaya Bangun Rumah di Jogja 2024: Hitungan Realistis</h3>
-                    <p class="text-slate-600 text-sm mb-4">Jangan tertipu harga murah per meter. Simak rincian biaya material dan upah tukang terbaru di Yogyakarta.</p>
-                    <a href="#" class="text-slate-900 font-bold text-xs uppercase tracking-wider flex items-center gap-1">Baca <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
-                </div>
-                <!-- Article 2 -->
-                <div class="reveal-element bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-slate-100" style="transition-delay: 100ms;">
-                    <p class="text-xs text-slate-400 mb-3">05 Nov 2024</p>
-                    <h3 class="font-bold text-lg mb-3 hover:text-amber-600 cursor-pointer transition-colors">Arsitek vs Kontraktor: Mana yang Anda Butuhkan?</h3>
-                    <p class="text-slate-600 text-sm mb-4">Memahami peran keduanya agar Anda tidak salah hire dan membuang budget di awal proyek.</p>
-                    <a href="#" class="text-slate-900 font-bold text-xs uppercase tracking-wider flex items-center gap-1">Baca <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
-                </div>
-                <!-- Article 3 -->
-                <div class="reveal-element bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow border border-slate-100" style="transition-delay: 200ms;">
-                    <p class="text-xs text-slate-400 mb-3">20 Nov 2024</p>
-                    <h3 class="font-bold text-lg mb-3 hover:text-amber-600 cursor-pointer transition-colors">Mengenal RAB: Cara Agar Budget Tidak Boncos</h3>
-                    <p class="text-slate-600 text-sm mb-4">Panduan membaca Rencana Anggaran Biaya agar Anda tahu kemana setiap rupiah uang Anda pergi.</p>
-                    <a href="#" class="text-slate-900 font-bold text-xs uppercase tracking-wider flex items-center gap-1">Baca <i data-lucide="arrow-right" class="w-3 h-3"></i></a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 9. FINAL CTA -->
-    <section class="py-32 bg-slate-900 text-white relative overflow-hidden text-center">
-        <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
-        <div class="container mx-auto px-6 relative z-10">
-            <h2 class="text-4xl md:text-5xl font-serif font-bold mb-6">Rumah Anda Layak <br/>Dibangun dengan Jujur.</h2>
-            <p class="text-slate-400 text-lg mb-10 max-w-2xl mx-auto">Jangan biarkan ketakutan menghalangi mimpi Anda. Mari kita duduk bersama, hitung detailnya, dan wujudkan rumah impian tanpa drama.</p>
-            <button onclick="openWhatsApp()" class="bg-amber-500 text-slate-900 px-10 py-5 rounded-full text-lg font-bold hover:bg-amber-400 transition-all hover:scale-105 shadow-lg shadow-amber-500/20">
-                Mulai Cerita Rumah Anda Sekarang
-            </button>
-        </div>
-    </section>
-
-    <!-- 10. FOOTER -->
-    <footer class="bg-slate-950 text-slate-400 py-16 border-t border-slate-900">
-        <div class="container mx-auto px-6 grid md:grid-cols-4 gap-12">
-            <div>
-                <div class="text-2xl font-bold text-white mb-6 font-serif tracking-tight">DEALIN.</div>
-                <p class="text-sm mb-6">Partner terpercaya mewujudkan hunian impian di Yogyakarta dengan prinsip transparansi dan amanah.</p>
-                <div class="flex gap-4">
-                    <i data-lucide="instagram" class="w-5 h-5 hover:text-white cursor-pointer"></i>
-                    <i data-lucide="facebook" class="w-5 h-5 hover:text-white cursor-pointer"></i>
-                    <i data-lucide="linkedin" class="w-5 h-5 hover:text-white cursor-pointer"></i>
-                </div>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-4">Layanan</h4>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-amber-500">Jasa Arsitek</a></li>
-                    <li><a href="#" class="hover:text-amber-500">Kontraktor Bangunan</a></li>
-                    <li><a href="#" class="hover:text-amber-500">Renovasi Rumah</a></li>
-                    <li><a href="#" class="hover:text-amber-500">Interior Design</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-4">Area Layanan</h4>
-                <ul class="space-y-2 text-sm">
-                    <li>Sleman</li>
-                    <li>Bantul</li>
-                    <li>Kota Yogyakarta</li>
-                    <li>Kulon Progo</li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="text-white font-bold mb-4">Kontak</h4>
-                <ul class="space-y-3 text-sm">
-                    <li class="flex gap-2 items-start">
-                        <i data-lucide="map-pin" class="w-4 h-4 mt-1 flex-shrink-0"></i>
-                        Jl. Monumen Perjuangan, Banguntapan, Yogyakarta
-                    </li>
-                    <li class="flex gap-2 items-center">
-                        <i data-lucide="message-circle" class="w-4 h-4"></i>
-                        +62 878-3888-6621 / dealinarchitect@gmail.com
-                    </li>
-                    
-                </ul>
-            </div>
-        </div>
-        <div class="container mx-auto px-6 mt-16 pt-8 border-t border-slate-900 text-center text-xs text-slate-600">
-            &copy; 2024 Dealin Architect. All rights reserved.
-        </div>
-    </footer>
-
-    <!-- STICKY WHATSAPP -->
-    <div class="fixed bottom-6 right-6 z-50 flex items-center gap-3">
-        <div class="bg-white px-4 py-2 rounded-full shadow-lg border border-slate-100 hidden md:block transition-all" id="wa-bubble">
-           <p class="text-sm font-medium text-slate-800" id="wa-text">
-              Tanya biaya bangun?
-           </p>
-        </div>
-        <button onclick="openWhatsApp()" class="bg-green-500 text-white p-4 rounded-full shadow-xl hover:scale-110 hover:bg-green-600 transition-all flex items-center justify-center relative">
-          <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
-          <i data-lucide="message-circle" class="w-7 h-7 fill-current text-white"></i>
-        </button>
-    </div>
-
-    <!-- MODAL CONTAINER (Hidden by default) -->
-    <div id="project-modal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 hidden">
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeModal()"></div>
-        <div class="bg-white w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-3xl relative z-10 shadow-2xl animate-scale-in">
-            <button onclick="closeModal()" class="absolute top-4 right-4 bg-white/50 hover:bg-white p-2 rounded-full transition-colors z-20">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
-            
-            <div id="modal-content" class="grid md:grid-cols-2">
-                <!-- Content injected via JS -->
-            </div>
-        </div>
-    </div>
-
-    <!-- JAVASCRIPT LOGIC -->
-    <script>
-        // --- DATA ---
-        const projects = [
-            {
-                id: 1,
-                title: "Rumah Tumbuh Keluarga Santoso",
-                category: "Residential",
-                image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000",
-                location: "Sleman, Yogyakarta",
-                year: "2023",
-                clientType: "Rumah Pertama",
-                problem: "Pak Santoso memiliki lahan memanjang namun budget terbatas. Ia takut jika pembangunan mangkrak di tengah jalan karena salah perhitungan.",
-                solution: "Kami menerapkan konsep 'Growing House' (Rumah Tumbuh). Struktur utama dibangun kokoh untuk 2 lantai, namun finishing tahap 1 difokuskan pada lantai dasar fungsional.",
-                result: "Rumah selesai tepat waktu dengan sisa budget 5% yang bisa digunakan untuk membeli furniture tambahan.",
-                specs: "LB 80m² / LT 120m²"
-            },
-            {
-                id: 2,
-                title: "Villa Minimalis 'The Calm'",
-                category: "Investment",
-                image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&q=80&w=1000",
-                location: "Bantul, Yogyakarta",
-                year: "2024",
-                clientType: "Investasi / Villa",
-                problem: "Klien ingin membangun villa untuk passive income, tapi berdomisili di Jakarta sehingga sulit memantau progress harian dan takut material dimanipulasi.",
-                solution: "Dealin memberikan akses CCTV 24/7 dan laporan progress digital mingguan yang mencocokkan RAB dengan struk belanja material asli.",
-                result: "Villa beroperasi 1 bulan lebih cepat dari jadwal, okupansi bulan pertama mencapai 80%.",
-                specs: "LB 150m² / LT 200m²"
-            },
-            {
-                id: 3,
-                title: "Renovasi Fasad Industrial",
-                category: "Renovation",
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&q=80&w=1000",
-                location: "Kota Yogyakarta",
-                year: "2023",
-                clientType: "Renovasi",
-                problem: "Rumah warisan tua yang gelap dan lembab. Klien ingin nuansa modern industrial tapi takut struktur lama runtuh.",
-                solution: "Audit struktur menyeluruh sebelum desain. Penguatan kolom utama dan penggunaan material ekspos untuk menekan biaya finishing.",
-                result: "Rumah menjadi terang, sirkulasi udara lancar, dan nilai properti naik estimasi 40%.",
-                specs: "LB 120m² / LT 150m²"
-            }
-        ];
-
-        const waMessages = [
-            "Tanya biaya bangun?",
-            "Konsultasi desain?",
-            "Cek timeline proyek?",
-            "Ngobrol sama Arsitek?"
-        ];
-
-        // --- INIT LUCIDE ICONS ---
-        lucide.createIcons();
-
-        // --- SCROLL REVEAL ANIMATION ---
-        const observerOptions = { threshold: 0.1 };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.reveal-element').forEach(el => observer.observe(el));
-
-        // --- RENDER PROJECTS ---
-        const projectContainer = document.getElementById('project-list');
-        projects.forEach(project => {
-            const card = document.createElement('div');
-            card.className = "min-w-[85vw] md:min-w-[400px] snap-center bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all cursor-pointer group";
-            card.onclick = () => openModal(project.id);
-            card.innerHTML = `
-                <div class="relative h-64 overflow-hidden">
-                    <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-                    <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-slate-900">
-                        ${project.category}
-                    </div>
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center gap-2 text-slate-500 text-xs mb-3">
-                        <i data-lucide="map-pin" class="w-3 h-3"></i> ${project.location} • ${project.year}
-                    </div>
-                    <h3 class="text-xl font-bold mb-2 text-slate-900 group-hover:text-amber-600 transition-colors">
-                        ${project.title}
-                    </h3>
-                    <p class="text-slate-600 text-sm line-clamp-2 mb-4">
-                        ${project.problem}
+          </div>
+          <div class="relative lg:h-[550px] flex items-center justify-center">
+            <div
+              class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-red-100/60 dark:bg-red-900/10 rounded-full blur-[80px] opacity-60"
+            ></div>
+            <div class="relative z-10 w-full max-w-md group">
+              <div
+                class="absolute -inset-1 bg-gradient-to-r from-red-200 to-gray-200 dark:from-red-900/40 dark:to-gray-800 rounded-2xl blur opacity-30 group-hover:opacity-60 transition duration-500"
+              ></div>
+              <img
+                alt="Architectural Sketch"
+                class="relative rounded-2xl shadow-2xl shadow-red-900/5 dark:shadow-black/50 border-4 border-white dark:border-gray-800 rotate-2 group-hover:rotate-0 transition duration-700 ease-out"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEiyCKtfxuT2_dHJbC6PrKLyaBc5HxG6BPkPY10PaC08AHNJkVsXUh3A2JuOb3Evd9ROlBNjBAEsuAY1-3wiW6khfDqDbCiYs2yJaJpd26ixzTs5ularuUm8-fJ-QoX_WAZqfWbaOjyYM94cZ15QcEXOF3pBX8vUidlh2zOcOoaZMP8qXu7USfiifooffnun5tZoJ9-9swK-QaGiYGy0fTAOm0IaXQ0tbesO3rY_FULfqIkIJ50Lo6jG4nQ2CKxLgbVVk11ZzYdoZh"
+              />
+              <div
+                class="absolute -top-6 -right-6 bg-white dark:bg-[#1a0a0a] p-4 rounded-xl shadow-xl animate-[bounce_4s_infinite] border border-gray-100 dark:border-gray-800"
+              >
+                <div class="flex items-center gap-3">
+                  <div
+                    class="bg-green-50 dark:bg-green-900/20 p-2.5 rounded-full text-green-600 dark:text-green-400"
+                  >
+                    <span class="material-icons-outlined">verified</span>
+                  </div>
+                  <div>
+                    <p
+                      class="text-xs text-gray-500 dark:text-gray-400 uppercase tracking-wide font-semibold"
+                    >
+                      Success Rate
                     </p>
-                    <button class="text-amber-600 text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
-                        Baca Cerita Lengkap <i data-lucide="chevron-right" class="w-4 h-4"></i>
-                    </button>
+                    <p class="font-bold text-gray-900 dark:text-white text-lg">
+                      100% Valid
+                    </p>
+                  </div>
                 </div>
-            `;
-            projectContainer.appendChild(card);
-        });
-        // Re-init icons for dynamic content
-        lucide.createIcons();
-
-        // --- NAVBAR SCROLL EFFECT ---
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            const logoText = navbar.querySelector('span');
-            if (window.scrollY > 50) {
-                navbar.classList.add('bg-white/90', 'backdrop-blur-md', 'shadow-sm', 'py-4');
-                navbar.classList.remove('bg-transparent', 'py-6');
-            } else {
-                navbar.classList.remove('bg-white/90', 'backdrop-blur-md', 'shadow-sm', 'py-4');
-                navbar.classList.add('bg-transparent', 'py-6');
-            }
-        });
-
-        // --- HERO TEXT ROTATOR ---
-        const heroTexts = document.querySelectorAll('.hero-text');
-        let currentTextIndex = 0;
-        setInterval(() => {
-            // Hide current
-            heroTexts[currentTextIndex].classList.remove('opacity-100', 'translate-y-0');
-            heroTexts[currentTextIndex].classList.add('opacity-0', 'translate-y-8');
-            
-            // Update index
-            currentTextIndex = (currentTextIndex + 1) % heroTexts.length;
-            
-            // Show next
-            heroTexts[currentTextIndex].classList.remove('opacity-0', 'translate-y-8');
-            heroTexts[currentTextIndex].classList.add('opacity-100', 'translate-y-0');
-        }, 4000);
-
-        // --- WA TEXT ROTATOR ---
-        const waTextElement = document.getElementById('wa-text');
-        let waIndex = 0;
-        setInterval(() => {
-            waIndex = (waIndex + 1) % waMessages.length;
-            // Simple fade out/in effect manually
-            waTextElement.style.opacity = '0';
-            setTimeout(() => {
-                waTextElement.innerText = waMessages[waIndex];
-                waTextElement.style.opacity = '1';
-            }, 300);
-        }, 3000);
-
-        // --- MOBILE MENU ---
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            const icon = document.getElementById('menu-icon');
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                menu.classList.add('flex');
-                icon.setAttribute('data-lucide', 'x');
-            } else {
-                menu.classList.add('hidden');
-                menu.classList.remove('flex');
-                icon.setAttribute('data-lucide', 'menu');
-            }
-            lucide.createIcons();
-        }
-
-        // --- WHATSAPP CLICK ---
-        function openWhatsApp() {
-            window.open("https://wa.me/6281234567890?text=Halo%20Dealin,%20saya%20ingin%20konsultasi%20rumah.", "_blank");
-        }
-
-        // --- MODAL FUNCTIONS ---
-        function openModal(id) {
-            const project = projects.find(p => p.id === id);
-            if (!project) return;
-
-            const modal = document.getElementById('project-modal');
-            const content = document.getElementById('modal-content');
-            
-            content.innerHTML = `
-                <div class="h-64 md:h-auto bg-slate-200">
-                    <img src="${project.image}" alt="${project.title}" class="w-full h-full object-cover" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="py-24 bg-dark-red-bg relative overflow-hidden">
+      <div
+        class="absolute inset-0 opacity-[0.03]"
+        style="
+          background-image: radial-gradient(#ffffff 1px, transparent 1px);
+          background-size: 30px 30px;
+        "
+      ></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="text-center mb-16">
+          <h2
+            class="text-3xl lg:text-4xl font-display font-bold text-white mb-4"
+          >
+            Kenapa Banyak Orang
+            <span class="text-secondary italic font-serif">Takut</span> Bangun
+            Rumah?
+          </h2>
+          <p class="text-red-100/70 max-w-2xl mx-auto text-lg font-light">
+            Membangun rumah seharusnya menjadi mimpi indah, bukan sumber stress
+            berkepanjangan.
+          </p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div
+            class="bg-white/5 backdrop-blur-sm border border-white/5 rounded-2xl p-8 hover:bg-white/10 hover:border-white/10 hover:-translate-y-1 transition duration-300 group"
+          >
+            <div
+              class="w-14 h-14 bg-gradient-to-br from-red-500/20 to-transparent rounded-xl flex items-center justify-center mb-6 text-red-400 group-hover:text-red-300 transition"
+            >
+              <span class="material-icons-outlined text-3xl">money_off</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Budget Membengkak</h3>
+            <p class="text-red-100/60 text-sm leading-relaxed">
+              RAB awal terlihat murah, tapi di tengah jalan banyak biaya
+              tambahan tak terduga yang 'memaksa' Anda mengeluarkan lebih.
+            </p>
+          </div>
+          <div
+            class="bg-white/5 backdrop-blur-sm border border-white/5 rounded-2xl p-8 hover:bg-white/10 hover:border-white/10 hover:-translate-y-1 transition duration-300 group"
+          >
+            <div
+              class="w-14 h-14 bg-gradient-to-br from-red-500/20 to-transparent rounded-xl flex items-center justify-center mb-6 text-red-400 group-hover:text-red-300 transition"
+            >
+              <span class="material-icons-outlined text-3xl">layers_clear</span>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">
+              Spesifikasi Diturunkan
+            </h3>
+            <p class="text-red-100/60 text-sm leading-relaxed">
+              Janji pakai material Grade A, realita di lapangan diganti Grade B
+              atau C tanpa sepengetahuan Anda demi keuntungan sepihak.
+            </p>
+          </div>
+          <div
+            class="bg-white/5 backdrop-blur-sm border border-white/5 rounded-2xl p-8 hover:bg-white/10 hover:border-white/10 hover:-translate-y-1 transition duration-300 group"
+          >
+            <div
+              class="w-14 h-14 bg-gradient-to-br from-red-500/20 to-transparent rounded-xl flex items-center justify-center mb-6 text-red-400 group-hover:text-red-300 transition"
+            >
+              <span class="material-icons-outlined text-3xl"
+                >question_answer</span
+              >
+            </div>
+            <h3 class="text-xl font-bold text-white mb-3">Susah Komunikasi</h3>
+            <p class="text-red-100/60 text-sm leading-relaxed">
+              Kontraktor susah dihubungi saat ada masalah, progress lambat, dan
+              tidak transparan mengenai jadwal penyelesaian.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="py-24 lg:py-32 bg-white dark:bg-background-dark">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-20">
+          <h2
+            class="text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-6"
+          >
+            Dealin Architect Mengubah Cara <br />
+            Orang Membangun Rumah.
+          </h2>
+          <p class="text-gray-600 dark:text-gray-400 text-lg">
+            Kami bukan sekadar membangun tembok, kami menjaga kepercayaan Anda.
+            Apa yang tertulis di kontrak, itulah yang kami bangun.
+          </p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-12 text-center">
+          <div
+            class="group p-6 rounded-3xl hover:bg-soft-red-bg dark:hover:bg-white/5 transition duration-500"
+          >
+            <div
+              class="w-20 h-20 mx-auto bg-blue-50 dark:bg-blue-900/10 text-blue-600 dark:text-blue-400 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:shadow-lg transition duration-300"
+            >
+              <span class="material-icons-outlined text-4xl">description</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              Transparansi Total
+            </h3>
+            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+              RAB detail hingga satuan baut. Anda berhak tahu kemana setiap
+              Rupiah uang Anda dialokasikan.
+            </p>
+          </div>
+          <div
+            class="group p-6 rounded-3xl hover:bg-soft-red-bg dark:hover:bg-white/5 transition duration-500"
+          >
+            <div
+              class="w-20 h-20 mx-auto bg-green-50 dark:bg-green-900/10 text-green-600 dark:text-green-400 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:shadow-lg transition duration-300"
+            >
+              <span class="material-icons-outlined text-4xl">gpp_good</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              Amanah &amp; Legal
+            </h3>
+            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+              Kontrak kerja jelas berpayung hukum. Garansi pemeliharaan dan
+              struktur terjamin tertulis.
+            </p>
+          </div>
+          <div
+            class="group p-6 rounded-3xl hover:bg-soft-red-bg dark:hover:bg-white/5 transition duration-500"
+          >
+            <div
+              class="w-20 h-20 mx-auto bg-secondary/10 text-yellow-600 dark:text-secondary rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:shadow-lg transition duration-300"
+            >
+              <span class="material-icons-outlined text-4xl">schedule</span>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3">
+              Timeline Terukur
+            </h3>
+            <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+              Jadwal kerja (Kurva S) yang realistis dan update progress mingguan
+              via digital report ke WhatsApp Anda.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="py-24 bg-soft-red-bg dark:bg-[#120505]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div
+          class="flex flex-col md:flex-row md:justify-between md:items-end mb-12 gap-4"
+        >
+          <div>
+            <span
+              class="text-primary font-bold text-xs tracking-wider uppercase mb-3 block"
+              >Featured Projects</span
+            >
+            <h2
+              class="text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white"
+            >
+              Bukan Sekadar Proyek, <br />
+              Ini Cerita Klien Kami
+            </h2>
+          </div>
+          <a
+            class="flex items-center text-sm font-medium text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-primary transition group"
+            href="#"
+          >
+            Geser untuk melihat cerita lainnya
+            <span
+              class="material-icons-outlined ml-1 transform group-hover:translate-x-1 transition"
+              >arrow_forward</span
+            >
+          </a>
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <div
+            class="bg-white dark:bg-card-dark rounded-2xl overflow-hidden shadow-soft hover:shadow-card-hover transition-all duration-300 group border border-gray-100 dark:border-white/5"
+          >
+            <div class="relative h-64 overflow-hidden">
+              <span
+                class="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-[10px] uppercase font-bold px-3 py-1.5 rounded-md text-gray-900 z-10 shadow-sm"
+                >Residential</span
+              >
+              <img
+                alt="Modern House"
+                class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkAf_rEmoKz5njIm8COd4s60ZNmalHTLMaKdq68XufuW_62c5ytJKNiefgqi3TjwPw_mu8oUQxsBnvSte2hVd1dCr7YzfzRrDNDdzIXU5G9Anjzarzh2rDedoKS-cMZVHxJAj-VBBaJfcLGJGGJMh7tj8C-2hqP2OWK5MvV7iN8ni7S_HDViPROF4LyLoc8zdBCUlsLFgTjsTsS8cAH-6uAyuvagYep417L3dlMxeovWyhvm58zU2YAiUNBgiXwVRhjppf_cljJisi"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"
+              ></div>
+            </div>
+            <div class="p-8">
+              <div
+                class="flex items-center text-xs text-gray-400 mb-3 font-medium"
+              >
+                <span class="material-icons-outlined text-sm mr-1 text-primary"
+                  >location_on</span
+                >
+                Sleman, Yogyakarta • 2023
+              </div>
+              <h3
+                class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition"
+              >
+                Rumah Tumbuh Santoso
+              </h3>
+              <p
+                class="text-gray-500 dark:text-gray-400 text-sm line-clamp-3 mb-6 leading-relaxed"
+              >
+                Pak Santoso memiliki lahan memanjang namun budget terbatas. Ia
+                takut jika pembangunan mangkrak di tengah jalan karena salah
+                perhitungan.
+              </p>
+              <a
+                class="text-primary font-bold text-sm flex items-center hover:underline"
+                href="#"
+              >
+                Baca Cerita Lengkap
+                <span class="material-icons-outlined text-sm ml-1"
+                  >chevron_right</span
+                >
+              </a>
+            </div>
+          </div>
+          <div
+            class="bg-white dark:bg-card-dark rounded-2xl overflow-hidden shadow-soft hover:shadow-card-hover transition-all duration-300 group border border-gray-100 dark:border-white/5"
+          >
+            <div class="relative h-64 overflow-hidden">
+              <span
+                class="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-[10px] uppercase font-bold px-3 py-1.5 rounded-md text-gray-900 z-10 shadow-sm"
+                >Investment</span
+              >
+              <img
+                alt="Villa Interior"
+                class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJIJ-EAmWUvBHp2nm3LnmoXtmoOtDmeKVsdowqz21U96repCZvgHqyOTxL54NGqmfYnejBrg5kYfL5lX9UPTsNQEPoQi6ej79cX6vweklOpAnRVIbgbiwjeOWN6qwf8IcUQkxAl21HdMdSHDt_Y53bMbVQmT-E_Pjt_h3Tgi36JFdol_tbzJBbhBoOVqAN0Yh3hcLPxi7z2g7Ttrh8MKzZ6DaCBN-uZP-Z2mZAUvVZrwWg1DIK2SPXwsDQyWL43zjPaLLeSIwP97bc"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"
+              ></div>
+            </div>
+            <div class="p-8">
+              <div
+                class="flex items-center text-xs text-gray-400 mb-3 font-medium"
+              >
+                <span class="material-icons-outlined text-sm mr-1 text-primary"
+                  >location_on</span
+                >
+                Bantul, Yogyakarta • 2024
+              </div>
+              <h3
+                class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition"
+              >
+                Villa Minimalis 'The Calm'
+              </h3>
+              <p
+                class="text-gray-500 dark:text-gray-400 text-sm line-clamp-3 mb-6 leading-relaxed"
+              >
+                Klien ingin membangun villa untuk passive income, tapi
+                berdomisili di Jakarta sehingga sulit memantau progress harian.
+              </p>
+              <a
+                class="text-primary font-bold text-sm flex items-center hover:underline"
+                href="#"
+              >
+                Baca Cerita Lengkap
+                <span class="material-icons-outlined text-sm ml-1"
+                  >chevron_right</span
+                >
+              </a>
+            </div>
+          </div>
+          <div
+            class="bg-white dark:bg-card-dark rounded-2xl overflow-hidden shadow-soft hover:shadow-card-hover transition-all duration-300 group border border-gray-100 dark:border-white/5"
+          >
+            <div class="relative h-64 overflow-hidden">
+              <span
+                class="absolute top-4 left-4 bg-white/95 backdrop-blur-sm text-[10px] uppercase font-bold px-3 py-1.5 rounded-md text-gray-900 z-10 shadow-sm"
+                >Renovation</span
+              >
+              <img
+                alt="Industrial Facade"
+                class="w-full h-full object-cover transform group-hover:scale-110 transition duration-700"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqBGoNo3AgEdZpUz27MgLJoCkYuKNSJlm1WWYN2se5UpOm2cysgXbsIN_BIbVLQGq1wKtmLuoCH1hxbm6K89JvfEjzKbBXrx-VDdvc2oNlYHX_II4sLLMcNrLYM7Y-6ElITdjhR13KpTpDeosjCHsFwIuj1jwQjh9rvjqcm-YdvX-cRuhqGgxFUOCsnrumNjpjOHqEDRY59z6hrvj2mGB7Zvkm-SJBTRaJQtXa_oMI9pcWwWJqVS8cKGfF8QuZGvPUIkGTdRF__OCO"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition duration-300"
+              ></div>
+            </div>
+            <div class="p-8">
+              <div
+                class="flex items-center text-xs text-gray-400 mb-3 font-medium"
+              >
+                <span class="material-icons-outlined text-sm mr-1 text-primary"
+                  >location_on</span
+                >
+                Kota Yogyakarta • 2023
+              </div>
+              <h3
+                class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition"
+              >
+                Renovasi Fasad Industrial
+              </h3>
+              <p
+                class="text-gray-500 dark:text-gray-400 text-sm line-clamp-3 mb-6 leading-relaxed"
+              >
+                Rumah warisan tua yang gelap dan lembab. Klien ingin nuansa
+                modern industrial tapi takut struktur lama tidak kuat.
+              </p>
+              <a
+                class="text-primary font-bold text-sm flex items-center hover:underline"
+                href="#"
+              >
+                Baca Cerita Lengkap
+                <span class="material-icons-outlined text-sm ml-1"
+                  >chevron_right</span
+                >
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="py-24 bg-white dark:bg-background-dark">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+          <h3
+            class="text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 mb-8"
+          >
+            Dipercaya oleh Partner &amp; Institusi
+          </h3>
+          <div
+            class="flex flex-wrap justify-center items-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition duration-500"
+          >
+            <span
+              class="text-xl font-bold font-display text-gray-400 dark:text-gray-500"
+              >Semen Gresik</span
+            >
+            <span
+              class="text-xl font-bold font-display text-gray-400 dark:text-gray-500"
+              >Mowilex</span
+            >
+            <span
+              class="text-xl font-bold font-display text-gray-400 dark:text-gray-500"
+              >Toto</span
+            >
+            <span
+              class="text-xl font-bold font-display text-gray-400 dark:text-gray-500"
+              >Propan</span
+            >
+          </div>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-8 items-stretch">
+          <div
+            class="bg-gradient-to-br from-[#8B0000] to-[#500000] p-10 md:p-14 rounded-[2rem] relative overflow-hidden flex flex-col justify-center shadow-xl shadow-red-900/20"
+          >
+            <div class="absolute top-0 right-0 p-8 opacity-10">
+              <span class="material-icons text-9xl text-white"
+                >format_quote</span
+              >
+            </div>
+            <div
+              class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10 mix-blend-overlay"
+            ></div>
+            <div class="relative z-10">
+              <div class="flex text-secondary mb-6 space-x-1">
+                <span class="material-icons text-xl">star</span>
+                <span class="material-icons text-xl">star</span>
+                <span class="material-icons text-xl">star</span>
+                <span class="material-icons text-xl">star</span>
+                <span class="material-icons text-xl">star</span>
+              </div>
+              <p
+                class="text-xl md:text-2xl font-display italic text-white mb-8 leading-relaxed font-light"
+              >
+                "Saya sempat skeptis karena trauma dengan kontraktor sebelumnya.
+                Tapi Dealin beda. Laporan mingguan mereka sangat detail, bahkan
+                saya bisa cek bon material. Rumah jadi tepat waktu."
+              </p>
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center text-white font-bold text-lg"
+                >
+                  H
                 </div>
-                <div class="p-8 md:p-12">
-                    <div class="inline-block bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full mb-4">
-                        ${project.clientType}
-                    </div>
-                    <h3 class="text-3xl font-serif font-bold text-slate-900 mb-2">${project.title}</h3>
-                    <div class="flex flex-wrap gap-4 text-sm text-slate-500 mb-8 border-b border-slate-100 pb-6">
-                        <span class="flex items-center gap-1"><i data-lucide="map-pin" class="w-4 h-4"></i> ${project.location}</span>
-                        <span class="flex items-center gap-1"><i data-lucide="calendar" class="w-4 h-4"></i> ${project.year}</span>
-                        <span class="flex items-center gap-1"><i data-lucide="layout-template" class="w-4 h-4"></i> ${project.specs}</span>
-                    </div>
-
-                    <div class="space-y-6">
-                        <div>
-                            <h4 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xs">!</span>
-                                Masalah
-                            </h4>
-                            <p class="text-slate-600 text-sm leading-relaxed">${project.problem}</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-xs">💡</span>
-                                Solusi Dealin
-                            </h4>
-                            <p class="text-slate-600 text-sm leading-relaxed">${project.solution}</p>
-                        </div>
-                        <div>
-                            <h4 class="font-bold text-slate-900 mb-2 flex items-center gap-2">
-                                <span class="w-6 h-6 rounded-full bg-green-100 text-green-600 flex items-center justify-center text-xs">✓</span>
-                                Hasil Akhir
-                            </h4>
-                            <p class="text-slate-600 text-sm leading-relaxed">${project.result}</p>
-                        </div>
-                    </div>
-
-                    <div class="mt-10 pt-6 border-t border-slate-100">
-                        <button 
-                            onclick="openWhatsApp()"
-                            class="w-full py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
-                        >
-                            Saya Ingin Rumah Seperti Ini <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </button>
-                    </div>
+                <div>
+                  <p class="font-bold text-white text-lg">
+                    Bapak Heru &amp; Ibu Susi
+                  </p>
+                  <p class="text-sm text-red-200">Owner Rumah Tumbuh Sleman</p>
                 </div>
-            `;
-            
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
-            lucide.createIcons(); // Init icons inside modal
-        }
-
-        function closeModal() {
-            document.getElementById('project-modal').classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-    </script>
-</body>
+              </div>
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-6">
+            <div
+              class="bg-red-50 dark:bg-card-dark p-8 rounded-[2rem] flex flex-col justify-center items-center text-center border border-red-100 dark:border-white/5"
+            >
+              <span class="text-5xl font-bold text-primary mb-2">0</span>
+              <span
+                class="text-sm text-gray-600 dark:text-gray-400 font-medium uppercase tracking-wide"
+                >Sengketa Proyek</span
+              >
+            </div>
+            <div
+              class="bg-blue-50 dark:bg-[#0F1C2E] p-8 rounded-[2rem] flex flex-col justify-center items-center text-center border border-blue-100 dark:border-white/5"
+            >
+              <span
+                class="text-5xl font-bold text-blue-600 dark:text-blue-400 mb-2"
+                >100%</span
+              >
+              <span
+                class="text-sm text-gray-600 dark:text-gray-400 font-medium uppercase tracking-wide"
+                >Sesuai RAB</span
+              >
+            </div>
+            <div
+              class="col-span-2 bg-gray-50 dark:bg-[#151515] p-10 rounded-[2rem] flex items-center justify-between border border-gray-100 dark:border-white/5"
+            >
+              <div>
+                <span
+                  class="text-5xl font-bold text-gray-900 dark:text-white mb-2 block"
+                  >90%</span
+                >
+                <span
+                  class="text-sm text-gray-600 dark:text-gray-400 font-medium uppercase tracking-wide"
+                  >Klien dari Referral</span
+                >
+              </div>
+              <span
+                class="material-icons-outlined text-6xl text-gray-200 dark:text-gray-700"
+                >groups</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="py-24 bg-soft-red-bg dark:bg-[#120505]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2
+          class="text-3xl lg:text-4xl font-display font-bold text-gray-900 dark:text-white mb-4"
+        >
+          Orang-Orang di Balik Rumah Anda
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-14 max-w-2xl mx-auto">
+          Kami bekerja dengan hati untuk memastikan tempat tinggal Anda aman,
+          nyaman, dan membanggakan.
+        </p>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+          <div
+            class="relative group rounded-2xl overflow-hidden aspect-[3/4] shadow-md hover:shadow-xl transition duration-500"
+          >
+            <img
+              alt="Architect"
+              class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgIkPS6SRpbyHKmm2afYfBSzr8pdIWF1UOAOmxRGrQcFLT53miMIEUC8pC8TVnsTK4o0UMWqICnuX_0HXeOj9PMai4ImPfyYiLDOkeUbnNwtYsGS8i8ULvcbXnK5SyvfrACFmauaKLm7gSl_QM3L9ObKA2d6zBzMAPEnEB72JvW6nrWIGOKGO9zYX6QJc2WF0zbkHWGS4I35OLtoJxaWtfS_jQ68pOCRMySa-SA8SosAmC3LE9lyqQn_kpG4E3YCGN8y7QYNoxwyVh"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 text-left"
+            >
+              <p class="text-white font-bold text-lg">Ir. Ahmad Fauzi</p>
+              <p
+                class="text-primary font-medium text-xs uppercase tracking-wider mt-1"
+              >
+                Principal Architect
+              </p>
+            </div>
+          </div>
+          <div
+            class="relative group rounded-2xl overflow-hidden aspect-[3/4] shadow-md hover:shadow-xl transition duration-500"
+          >
+            <img
+              alt="Interior Designer"
+              class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDH9mUOg-xSHakoIT4PE_nnAf422addvRNuqC70MJBmfoXY76c7Lj-wzIGwwISAQF89PULdTx7SbbYo7qhtGDSSzkGJAPjq2qrn5nJOU1lySIkE6PcybCUQUlt2EVy7HnmtuZhqxLmWi190oOFkkZ4VCBSTzLWgvMK9BS6Vw0a-0NqE0xt11QHfxoHHrNLsraT5vMnhWY3jzSnZqdXSNjn_n4rx-JT-sL4GIAK5yDHHx-a_F5fBJRAWsINAlugR_qY0jDaSCJ0zeUDt"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 text-left"
+            >
+              <p class="text-white font-bold text-lg">Sarah Wijaya, S.T.</p>
+              <p
+                class="text-primary font-medium text-xs uppercase tracking-wider mt-1"
+              >
+                Lead Interior
+              </p>
+            </div>
+          </div>
+          <div
+            class="relative group rounded-2xl overflow-hidden aspect-[3/4] shadow-md hover:shadow-xl transition duration-500"
+          >
+            <img
+              alt="Head Construction"
+              class="w-full h-full object-cover transition duration-700 group-hover:scale-105"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcUJM01OEl5GERObJ9O5_1IrjmY5NszPJmVIBsD6mEenaR3uj2PjDksVSDnDY94uwhszoFJmJpJtpPNH9aC92y4v3CQlGv-w2MCjJc7YEnyhOCHIFM3xWXq1Vjv5SMu7MjvYJi_GXk43KQ-_wf7zXcYQa1Ejkh92VV-WPSx3kyLnidiveQd2u4oFW2NZisCdbnBSyev4IWtSZnRD6GDu19aY4FtkVjA9S9S1VdvfRusW8ojMiFgJDQ4yGiINDdk7j3Doy0lQYV0fqU"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 text-left"
+            >
+              <p class="text-white font-bold text-lg">Budi Santoso</p>
+              <p
+                class="text-primary font-medium text-xs uppercase tracking-wider mt-1"
+              >
+                Head of Construction
+              </p>
+            </div>
+          </div>
+          <div
+            class="relative group rounded-2xl overflow-hidden aspect-[3/4] shadow-md hover:shadow-xl transition duration-500"
+          >
+            <img
+              alt="Field Team"
+              class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition duration-700 group-hover:scale-105"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCm-XPii9Yhl7FyVYKqi-gS_KeXwZVkwyxad3e0GY5QR1a-j5SvvSTEk_WV-mrRZA3l_VZxMnUqFyfrS_30k-aNpGFeGeUEupyUY7V3jwwXG_p625GAmUSoci9dTJ9IB75sqquPY_TRVFYBlXqM-a_UhgwhJLJUCfaZj1Tr2I1kdnGlJWtSjAIP6kLI33gdgj2q_xGA7ULgJ8tB0KVWTPUfsIMi7pyHrofJfwkqWhf_b4QJGyWEL-pQZIAGOneU6STwNfq_rFNRNea"
+            />
+            <div
+              class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent flex flex-col justify-end p-6 text-left"
+            >
+              <p class="text-white font-bold text-lg">Tim Lapangan</p>
+              <p
+                class="text-primary font-medium text-xs uppercase tracking-wider mt-1"
+              >
+                Dedikasi Tinggi
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="py-24 bg-white dark:bg-background-dark">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-12">
+          <h2
+            class="text-2xl font-display font-bold text-gray-900 dark:text-white"
+          >
+            Wawasan Membangun
+          </h2>
+          <a
+            class="text-sm font-bold text-primary hover:text-primary-hover transition"
+            href="#"
+            >Lihat Semua Artikel</a
+          >
+        </div>
+        <div class="grid md:grid-cols-3 gap-8">
+          <article
+            class="bg-white dark:bg-card-dark p-8 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-red-200 dark:hover:border-red-900/50 transition duration-300 group hover:shadow-lg"
+          >
+            <span
+              class="text-xs font-semibold text-primary/80 block mb-3 uppercase tracking-wider"
+              >Tips Budget</span
+            >
+            <h3
+              class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition"
+            >
+              Biaya Bangun Rumah di Jogja 2024: Hitungan Realistis
+            </h3>
+            <p
+              class="text-sm text-gray-500 dark:text-gray-400 mb-6 line-clamp-2 leading-relaxed"
+            >
+              Jangan tertipu harga murah per meter. Simak rincian biaya material
+              dan upah tukang terbaru.
+            </p>
+            <a
+              class="text-xs font-bold uppercase tracking-wider flex items-center group-hover:text-primary transition-colors"
+              href="#"
+            >
+              Baca
+              <span
+                class="material-icons-outlined text-sm ml-1 transform group-hover:translate-x-1 transition"
+                >arrow_forward</span
+              >
+            </a>
+          </article>
+          <article
+            class="bg-white dark:bg-card-dark p-8 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-red-200 dark:hover:border-red-900/50 transition duration-300 group hover:shadow-lg"
+          >
+            <span
+              class="text-xs font-semibold text-primary/80 block mb-3 uppercase tracking-wider"
+              >Edukasi</span
+            >
+            <h3
+              class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition"
+            >
+              Arsitek vs Kontraktor: Mana yang Anda Butuhkan?
+            </h3>
+            <p
+              class="text-sm text-gray-500 dark:text-gray-400 mb-6 line-clamp-2 leading-relaxed"
+            >
+              Memahami peran keduanya agar Anda tidak salah hire dan membuang
+              budget di awal proyek.
+            </p>
+            <a
+              class="text-xs font-bold uppercase tracking-wider flex items-center group-hover:text-primary transition-colors"
+              href="#"
+            >
+              Baca
+              <span
+                class="material-icons-outlined text-sm ml-1 transform group-hover:translate-x-1 transition"
+                >arrow_forward</span
+              >
+            </a>
+          </article>
+          <article
+            class="bg-white dark:bg-card-dark p-8 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-red-200 dark:hover:border-red-900/50 transition duration-300 group hover:shadow-lg"
+          >
+            <span
+              class="text-xs font-semibold text-primary/80 block mb-3 uppercase tracking-wider"
+              >Keuangan</span
+            >
+            <h3
+              class="text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary transition"
+            >
+              Mengenal RAB: Cara Agar Budget Tidak Boncos
+            </h3>
+            <p
+              class="text-sm text-gray-500 dark:text-gray-400 mb-6 line-clamp-2 leading-relaxed"
+            >
+              Panduan membaca Rencana Anggaran Biaya agar Anda tahu kemana
+              setiap rupiah uang Anda pergi.
+            </p>
+            <a
+              class="text-xs font-bold uppercase tracking-wider flex items-center group-hover:text-primary transition-colors"
+              href="#"
+            >
+              Baca
+              <span
+                class="material-icons-outlined text-sm ml-1 transform group-hover:translate-x-1 transition"
+                >arrow_forward</span
+              >
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+    <section class="py-28 bg-dark-red-bg relative overflow-hidden">
+      <div
+        class="absolute inset-0 opacity-20"
+        style="
+          background-image: linear-gradient(
+              30deg,
+              #450a0a 12%,
+              transparent 12.5%,
+              transparent 87%,
+              #450a0a 87.5%,
+              #450a0a
+            ),
+            linear-gradient(
+              150deg,
+              #450a0a 12%,
+              transparent 12.5%,
+              transparent 87%,
+              #450a0a 87.5%,
+              #450a0a
+            ),
+            linear-gradient(
+              30deg,
+              #450a0a 12%,
+              transparent 12.5%,
+              transparent 87%,
+              #450a0a 87.5%,
+              #450a0a
+            ),
+            linear-gradient(
+              150deg,
+              #450a0a 12%,
+              transparent 12.5%,
+              transparent 87%,
+              #450a0a 87.5%,
+              #450a0a
+            ),
+            linear-gradient(
+              60deg,
+              #601010 25%,
+              transparent 25.5%,
+              transparent 75%,
+              #601010 75%,
+              #601010
+            ),
+            linear-gradient(
+              60deg,
+              #601010 25%,
+              transparent 25.5%,
+              transparent 75%,
+              #601010 75%,
+              #601010
+            );
+          background-size: 80px 140px;
+          background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+        "
+      ></div>
+      <div class="max-w-4xl mx-auto px-4 text-center relative z-10">
+        <h2 class="text-4xl lg:text-5xl font-display font-bold text-white mb-8">
+          Rumah Anda Layak <br />
+          Dibangun dengan Jujur.
+        </h2>
+        <p class="text-red-100/80 mb-12 text-lg font-light max-w-2xl mx-auto">
+          Jangan biarkan ketakutan menghalangi mimpi Anda. Mari kita duduk
+          bersama, hitung detailnya, dan wujudkan rumah impian tanpa drama.
+        </p>
+        <button
+          class="bg-secondary hover:bg-yellow-400 text-gray-900 font-bold px-12 py-5 rounded-full shadow-lg shadow-orange-500/10 transform hover:-translate-y-1 transition duration-300 flex items-center gap-3 mx-auto"
+        >
+          Mulai Cerita Rumah Anda Sekarang
+          <span class="material-icons-outlined text-gray-800"
+            >arrow_forward</span
+          >
+        </button>
+      </div>
+    </section>
+    <footer
+      class="bg-[#111111] text-gray-400 py-16 border-t border-gray-800/50"
+    >
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid md:grid-cols-4 gap-12">
+          <div class="col-span-1 md:col-span-1">
+            <div
+              class="text-white font-bold font-display text-2xl mb-6 flex items-center gap-2"
+            >
+              <span class="w-2 h-8 bg-primary block rounded-full"></span>
+              DEALIN.
+            </div>
+            <p class="text-sm leading-relaxed mb-6 text-gray-500">
+              Partner terpercaya mewujudkan hunian impian di Yogyakarta dengan
+              prinsip transparansi dan amanah.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition duration-300"
+                href="#"
+                ><span class="material-icons-outlined text-lg"
+                  >camera_alt</span
+                ></a
+              >
+              <a
+                class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition duration-300"
+                href="#"
+                ><span class="material-icons-outlined text-lg"
+                  >facebook</span
+                ></a
+              >
+              <a
+                class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-primary hover:text-white transition duration-300"
+                href="#"
+                ><span class="material-icons-outlined text-lg">work</span></a
+              >
+            </div>
+          </div>
+          <div>
+            <h4 class="text-white font-bold mb-6 text-lg">Layanan</h4>
+            <ul class="space-y-4 text-sm">
+              <li>
+                <a
+                  class="hover:text-primary transition flex items-center gap-2 group"
+                  href="#"
+                  ><span
+                    class="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-primary"
+                  ></span>
+                  Jasa Arsitek</a
+                >
+              </li>
+              <li>
+                <a
+                  class="hover:text-primary transition flex items-center gap-2 group"
+                  href="#"
+                  ><span
+                    class="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-primary"
+                  ></span>
+                  Kontraktor Bangunan</a
+                >
+              </li>
+              <li>
+                <a
+                  class="hover:text-primary transition flex items-center gap-2 group"
+                  href="#"
+                  ><span
+                    class="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-primary"
+                  ></span>
+                  Renovasi Rumah</a
+                >
+              </li>
+              <li>
+                <a
+                  class="hover:text-primary transition flex items-center gap-2 group"
+                  href="#"
+                  ><span
+                    class="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-primary"
+                  ></span>
+                  Interior Design</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-bold mb-6 text-lg">Area Layanan</h4>
+            <ul class="space-y-4 text-sm">
+              <li>Sleman</li>
+              <li>Bantul</li>
+              <li>Kota Yogyakarta</li>
+              <li>Kulon Progo</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-bold mb-6 text-lg">Kontak</h4>
+            <ul class="space-y-6 text-sm">
+              <li class="flex items-start">
+                <div class="bg-white/5 p-2 rounded-lg mr-4 text-primary">
+                  <span class="material-icons-outlined text-sm"
+                    >location_on</span
+                  >
+                </div>
+                <span class="mt-1 text-gray-500"
+                  >Jl. Monumen Perjuangan, Banguntapan, Yogyakarta</span
+                >
+              </li>
+              <li class="flex items-start">
+                <div class="bg-white/5 p-2 rounded-lg mr-4 text-primary">
+                  <span class="material-icons-outlined text-sm">call</span>
+                </div>
+                <div>
+                  <p class="font-bold text-white tracking-wide">
+                    +62 878-3888-6621
+                  </p>
+                  <p class="text-xs mt-1 text-gray-500">
+                    dealinarchitect@gmail.com
+                  </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-800 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4"
+        >
+          <div class="text-xs text-gray-600">
+            © 2024 Dealin Architect. All rights reserved.
+          </div>
+          <div class="flex space-x-6 text-xs text-gray-600">
+            <a class="hover:text-white transition" href="#">Privacy Policy</a>
+            <a class="hover:text-white transition" href="#">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div class="fixed bottom-8 right-8 z-50">
+      <div class="relative group">
+        <span
+          class="absolute right-16 top-3 bg-white text-gray-900 text-xs font-bold px-4 py-2 rounded-xl shadow-xl whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0"
+        >
+          Tanya biaya bangun?
+        </span>
+        <button
+          class="bg-[#25D366] hover:bg-[#20bd5a] text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30 transform hover:scale-110 transition duration-300"
+        >
+          <span class="material-icons-outlined text-3xl">whatsapp</span>
+        </button>
+        <div
+          class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-primary rounded-full border-2 border-white dark:border-gray-900 animate-ping"
+        ></div>
+        <div
+          class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-primary rounded-full border-2 border-white dark:border-gray-900"
+        ></div>
+      </div>
+    </div>
+  </body>
 </html>
